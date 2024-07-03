@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.entity;
+package com.wjy.marketcenter.po;
 
 import lombok.Data;
 

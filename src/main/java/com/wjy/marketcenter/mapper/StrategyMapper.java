@@ -1,6 +1,6 @@
 package com.wjy.marketcenter.mapper;
 
-import com.wjy.marketcenter.entity.Strategy;
+import com.wjy.marketcenter.po.Strategy;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

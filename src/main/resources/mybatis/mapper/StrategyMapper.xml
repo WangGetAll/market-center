@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wjy.marketcenter.mapper.StrategyMapper">
 
-    <resultMap id="dataMap" type="com.wjy.marketcenter.entity.Strategy">
+    <resultMap id="dataMap" type="com.wjy.marketcenter.po.Strategy">
         <id column="id" property="id"/>
         <result column="strategy_id" property="strategyId"/>
         <result column="strategy_desc" property="strategyDesc"/>

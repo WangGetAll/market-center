@@ -1,7 +1,7 @@
 package com.wjy.marketcenter.infrastructure;
 
 import com.alibaba.fastjson.JSON;
-import com.wjy.marketcenter.entity.Award;
+import com.wjy.marketcenter.po.Award;
 import com.wjy.marketcenter.mapper.AwardMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

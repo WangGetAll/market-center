@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wjy.marketcenter.mapper.AwardMapper">
 
-    <resultMap id="dataMap" type="com.wjy.marketcenter.entity.Award">
+    <resultMap id="dataMap" type="com.wjy.marketcenter.po.Award">
         <id column="id" property="id"/>
         <result column="award_id" property="awardId"/>
         <result column="award_key" property="awardKey"/>
