@@ -8,4 +8,6 @@ import java.util.List;
 @Mapper
 public interface StrategyRuleMapper {
     List<StrategyRule> queryStrategyRuleList();
+
+    StrategyRule queryStrategyRule(StrategyRule strategyRuleReq);
 }
