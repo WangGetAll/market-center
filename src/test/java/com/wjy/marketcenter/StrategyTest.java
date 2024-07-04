@@ -1,12 +1,11 @@
 package com.wjy.marketcenter;
 
 import com.wjy.marketcenter.redis.RedisService;
-import com.wjy.marketcenter.service.StrategyArmory;
+import com.wjy.marketcenter.service.armory.StrategyArmory;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.redisson.api.RMap;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 

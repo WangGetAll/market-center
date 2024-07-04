@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.service;
+package com.wjy.marketcenter.service.armory;
 
 import com.wjy.marketcenter.entity.StrategyAwardEntity;
 import com.wjy.marketcenter.entity.StrategyEntity;

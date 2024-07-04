@@ -10,4 +10,6 @@ public interface StrategyRuleMapper {
     List<StrategyRule> queryStrategyRuleList();
 
     StrategyRule queryStrategyRule(StrategyRule strategyRuleReq);
+
+    String queryStrategyRuleValue(StrategyRule strategyRule);
 }

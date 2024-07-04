@@ -107,7 +107,7 @@ public class StrategyRepository  {
 
 
     /**
-     * 根据策略i，查询策略信息
+     * 根据策略id，查询策略信息
      * @param strategyId
      * @return
      */
@@ -149,4 +149,20 @@ public class StrategyRepository  {
                 .ruleDesc(strategyRuleRes.getRuleDesc())
                 .build();
     }
+
+    /**
+     * 根据策略id、奖品id（如果有）、规则类型去查询规则的详情
+     * @param strategyId
+     * @param awardId
+     * @param ruleModel
+     * @return
+     */
+    public String queryStrategyRuleValue(Long strategyId, Integer awardId, String ruleModel) {
+        StrategyRule strategyRule = new StrategyRule();
+        strategyRule.setStrategyId(strategyId);
+        strategyRule.setAwardId(awardId);
+        strategyRule.setRuleModel(ruleModel);
+        return strategyRuleMapper.queryStrategyRuleValue(strategyRule);
+    }
+
 }
