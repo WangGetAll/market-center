@@ -6,17 +6,14 @@ import com.wjy.marketcenter.common.Constants;
 import com.wjy.marketcenter.entity.StrategyAwardEntity;
 import com.wjy.marketcenter.entity.StrategyEntity;
 import com.wjy.marketcenter.entity.StrategyRuleEntity;
-import com.wjy.marketcenter.mapper.StrategyAwardMapper;
-import com.wjy.marketcenter.mapper.StrategyMapper;
-import com.wjy.marketcenter.mapper.StrategyRuleMapper;
-import com.wjy.marketcenter.po.Strategy;
-import com.wjy.marketcenter.po.StrategyAward;
-import com.wjy.marketcenter.po.StrategyRule;
+import com.wjy.marketcenter.mapper.*;
+import com.wjy.marketcenter.po.*;
 import com.wjy.marketcenter.redis.RedisService;
-import com.wjy.marketcenter.valobj.StrategyAwardRuleModelVO;
+import com.wjy.marketcenter.valobj.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +30,15 @@ public class StrategyRepository  {
 
     @Resource
     private RedisService redisService;
+
+    @Resource
+    private RuleTreeMapper ruleTreeMapper;
+
+    @Resource
+    private RuleTreeNodeLineMapper ruleTreeNodeLineMapper;
+
+    @Resource
+    private RuleTreeNodeMapper ruleTreeNodeMapper;
 
     /**
      * 根據startegyId，查询该策略下有哪些奖品，每种奖品的库存、剩余库存、中奖概率
@@ -186,7 +192,72 @@ public class StrategyRepository  {
         strategyAward.setStrategyId(strategyId);
         strategyAward.setAwardId(awardId);
         String ruleModels = strategyAwardMapper.queryStrategyAwardRuleModels(strategyAward);
+        if (null == ruleModels) return null;
         return StrategyAwardRuleModelVO.builder().ruleModels(ruleModels).build();
 
     }
+
+    /**
+     * 根据treeid查询tree
+     * @param treeId
+     * @return
+     */
+    public RuleTreeVO queryRuleTreeVOByTreeId(String treeId) {
+        // 优先从缓存获取
+        String cacheKey = Constants.RedisKey.RULE_TREE_VO_KEY + treeId;
+        RuleTreeVO ruleTreeVOCache = redisService.getValue(cacheKey);
+        if (null != ruleTreeVOCache) return ruleTreeVOCache;
+
+        // 从数据库获取
+        RuleTree ruleTree = ruleTreeMapper.queryRuleTreeByTreeId(treeId);
+        List<RuleTreeNode> ruleTreeNodes = ruleTreeNodeMapper.queryRuleTreeNodeListByTreeId(treeId);
+        List<RuleTreeNodeLine> ruleTreeNodeLines = ruleTreeNodeLineMapper.queryRuleTreeNodeLineListByTreeId(treeId);
+
+        // 1. tree node line 转换Map结构
+        // key:起始结点的名字，value：所有起始结点一样的边对象的list
+        Map<String, List<RuleTreeNodeLineVO>> ruleTreeNodeLineMap = new HashMap<>();
+        for (RuleTreeNodeLine ruleTreeNodeLine : ruleTreeNodeLines) {
+            // ruleTreeNodeLine -> ruleTreeNodeLineVO
+            RuleTreeNodeLineVO ruleTreeNodeLineVO = RuleTreeNodeLineVO.builder()
+                    .treeId(ruleTreeNodeLine.getTreeId())
+                    .ruleNodeFrom(ruleTreeNodeLine.getRuleNodeFrom())
+                    .ruleNodeTo(ruleTreeNodeLine.getRuleNodeTo())
+                    .ruleLimitType(RuleLimitTypeVO.valueOf(ruleTreeNodeLine.getRuleLimitType()))
+                    .ruleLimitValue(RuleLogicCheckTypeVO.valueOf(ruleTreeNodeLine.getRuleLimitValue()))
+                    .build();
+            // 有就获取List，没有就新建
+            List<RuleTreeNodeLineVO> ruleTreeNodeLineVOList = ruleTreeNodeLineMap.computeIfAbsent(ruleTreeNodeLine.getRuleNodeFrom(), k -> new ArrayList<>());
+            // 加入List
+            ruleTreeNodeLineVOList.add(ruleTreeNodeLineVO);
+        }
+
+        // 2. tree node 转换为Map结构
+        // key:结点的名字 value:结点
+        Map<String, RuleTreeNodeVO> treeNodeMap = new HashMap<>();
+        for (RuleTreeNode ruleTreeNode : ruleTreeNodes) {
+            // ruleTreeNode -> ruleTreeNodeVO
+            RuleTreeNodeVO ruleTreeNodeVO = RuleTreeNodeVO.builder()
+                    .treeId(ruleTreeNode.getTreeId())
+                    .ruleKey(ruleTreeNode.getRuleKey())
+                    .ruleDesc(ruleTreeNode.getRuleDesc())
+                    .ruleValue(ruleTreeNode.getRuleValue())
+                    .treeNodeLineVOList(ruleTreeNodeLineMap.get(ruleTreeNode.getRuleKey()))
+                    .build();
+            treeNodeMap.put(ruleTreeNode.getRuleKey(), ruleTreeNodeVO);
+        }
+
+        // 3. 构建 Rule Tree
+
+        RuleTreeVO ruleTreeVODB = RuleTreeVO.builder()
+                .treeId(ruleTree.getTreeId())
+                .treeName(ruleTree.getTreeName())
+                .treeDesc(ruleTree.getTreeDesc())
+                .treeRootRuleNode(ruleTree.getTreeRootRuleKey())
+                .treeNodeMap(treeNodeMap)
+                .build();
+
+        redisService.setValue(cacheKey, ruleTreeVODB);
+        return ruleTreeVODB;
+    }
+
 }

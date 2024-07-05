@@ -36,7 +36,7 @@ public class DefaultTreeFactory {
     public static class TreeActionEntity {
         // 放行还是不放行
         private RuleLogicCheckTypeVO ruleLogicCheckType;
-        private StrategyAwardData strategyAwardData;
+        private StrategyAwardVO strategyAwardVO;
     }
 
     /**
@@ -46,7 +46,7 @@ public class DefaultTreeFactory {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class StrategyAwardData {
+    public static class StrategyAwardVO {
         /**
          * 抽奖奖品ID - 内部流转使用
          */

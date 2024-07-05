@@ -35,8 +35,8 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
      * @return
      */
     @Override
-    public DefaultTreeFactory.StrategyAwardData process(String userId, Long strategyId, Integer awardId) {
-        DefaultTreeFactory.StrategyAwardData strategyAwardData = null;
+    public DefaultTreeFactory.StrategyAwardVO process(String userId, Long strategyId, Integer awardId) {
+        DefaultTreeFactory.StrategyAwardVO strategyAwardData = null;
 
         // 树的根节点
         String nextNode = ruleTreeVO.getTreeRootRuleNode();
@@ -52,7 +52,7 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
             // 处理器执行
             DefaultTreeFactory.TreeActionEntity logicEntity = logicTreeNode.logic(userId, strategyId, awardId);
             RuleLogicCheckTypeVO ruleLogicCheckTypeVO = logicEntity.getRuleLogicCheckType();
-            strategyAwardData = logicEntity.getStrategyAwardData();
+            strategyAwardData = logicEntity.getStrategyAwardVO();
             log.info("决策树引擎【{}】treeId:{} node:{} code:{}", ruleTreeVO.getTreeName(), ruleTreeVO.getTreeId(), nextNode, ruleLogicCheckTypeVO.getCode());
 
             // 获取下个节点
