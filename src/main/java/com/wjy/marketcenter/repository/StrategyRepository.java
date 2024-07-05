@@ -167,6 +167,16 @@ public class StrategyRepository  {
     }
 
     /**
+     * 根据策略id、规则类型，strategy_rule表中去查询规则的详情
+     * @param strategyId
+     * @param ruleModel
+     * @return
+     */
+    public String queryStrategyRuleValue(Long strategyId, String ruleModel) {
+       return queryStrategyRuleValue(strategyId, null, ruleModel);
+    }
+
+    /**
      * 根据策略id、奖品id，strategy_award表中查询规则的名字
      * @param awardId
      * @return

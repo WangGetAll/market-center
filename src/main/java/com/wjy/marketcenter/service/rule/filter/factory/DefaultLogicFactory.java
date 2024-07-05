@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.service.rule.factory;
+package com.wjy.marketcenter.service.rule.filter.factory;
 
 import com.wjy.marketcenter.entity.RuleActionEntity;
 import com.wjy.marketcenter.service.annotation.LogicStrategy;

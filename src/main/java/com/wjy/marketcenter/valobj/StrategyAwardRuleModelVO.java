@@ -1,12 +1,11 @@
 package com.wjy.marketcenter.valobj;
 
 import com.wjy.marketcenter.common.Constants;
-import com.wjy.marketcenter.service.rule.factory.DefaultLogicFactory;
+import com.wjy.marketcenter.service.rule.filter.factory.DefaultLogicFactory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.yaml.snakeyaml.scanner.Constant;
 
 import java.util.ArrayList;
 import java.util.List;

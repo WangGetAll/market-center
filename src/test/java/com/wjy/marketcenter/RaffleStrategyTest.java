@@ -6,8 +6,8 @@ import com.wjy.marketcenter.entity.RaffleAwardEntity;
 import com.wjy.marketcenter.entity.RaffleFactorEntity;
 import com.wjy.marketcenter.service.IRaffleStrategy;
 import com.wjy.marketcenter.service.armory.StrategyArmory;
-import com.wjy.marketcenter.service.rule.impl.RuleLockLogicFilter;
-import com.wjy.marketcenter.service.rule.impl.RuleWeightLogicFilter;
+import com.wjy.marketcenter.service.rule.chain.impl.RuleWeightLogicChain;
+import com.wjy.marketcenter.service.rule.filter.impl.RuleLockLogicFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class RaffleStrategyTest {
     private IRaffleStrategy raffleStrategy;
 
     @Resource
-    private RuleWeightLogicFilter ruleWeightLogicFilter;
+    private RuleWeightLogicChain ruleWeightLogicFilter;
     @Resource
     private RuleLockLogicFilter ruleLockLogicFilter;
 
