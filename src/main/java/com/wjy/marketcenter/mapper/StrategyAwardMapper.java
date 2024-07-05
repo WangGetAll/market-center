@@ -14,4 +14,6 @@ public interface StrategyAwardMapper {
      * @param strategyId
      */
     List<StrategyAward> queryStrategyAwardListByStrategyId(Long strategyId);
+
+    String queryStrategyAwardRuleModels(StrategyAward strategyAward);
 }

@@ -13,6 +13,7 @@ import com.wjy.marketcenter.po.Strategy;
 import com.wjy.marketcenter.po.StrategyAward;
 import com.wjy.marketcenter.po.StrategyRule;
 import com.wjy.marketcenter.redis.RedisService;
+import com.wjy.marketcenter.valobj.StrategyAwardRuleModelVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -151,7 +152,7 @@ public class StrategyRepository  {
     }
 
     /**
-     * 根据策略id、奖品id（如果有）、规则类型去查询规则的详情
+     * 根据策略id、奖品id（如果有）、规则类型，strategy_rule表中去查询规则的详情
      * @param strategyId
      * @param awardId
      * @param ruleModel
@@ -165,4 +166,17 @@ public class StrategyRepository  {
         return strategyRuleMapper.queryStrategyRuleValue(strategyRule);
     }
 
+    /**
+     * 根据策略id、奖品id，strategy_award表中查询规则的名字
+     * @param awardId
+     * @return
+     */
+    public StrategyAwardRuleModelVO queryStrategyAwardRuleModelVO(Long strategyId, Integer awardId) {
+        StrategyAward strategyAward = new StrategyAward();
+        strategyAward.setStrategyId(strategyId);
+        strategyAward.setAwardId(awardId);
+        String ruleModels = strategyAwardMapper.queryStrategyAwardRuleModels(strategyAward);
+        return StrategyAwardRuleModelVO.builder().ruleModels(ruleModels).build();
+
+    }
 }
