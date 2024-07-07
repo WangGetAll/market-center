@@ -1,5 +1,6 @@
 package com.wjy.marketcenter.service.armory;
 
+import com.wjy.marketcenter.common.Constants;
 import com.wjy.marketcenter.entity.StrategyAwardEntity;
 import com.wjy.marketcenter.entity.StrategyEntity;
 import com.wjy.marketcenter.entity.StrategyRuleEntity;
@@ -22,10 +23,18 @@ public class StrategyArmory  {
     @Resource
     private StrategyRepository strategyRepository;
 
-
+    private final SecureRandom secureRandom = new SecureRandom();
     public boolean assembleLotteryStrategy(Long strategyId) {
         //  查询策略对应的奖品信息
         List<StrategyAwardEntity> strategyAwardEntities = strategyRepository.queryStrategyAwardList(strategyId);
+
+        // 缓存奖品库存【用于decr扣减库存使用】
+        for (StrategyAwardEntity strategyAward : strategyAwardEntities) {
+            Integer awardId = strategyAward.getAwardId();
+            Integer awardCount = strategyAward.getAwardCount();
+            cacheStrategyAwardCount(strategyId, awardId, awardCount);
+        }
+
         //  装载
         assembleLotteryStrategy(String.valueOf(strategyId), strategyAwardEntities);
         // 查询策略信息
@@ -52,6 +61,19 @@ public class StrategyArmory  {
         return true;
 
     }
+
+    /**
+     * 缓存奖品库存到Redis
+     *
+     * @param strategyId 策略ID
+     * @param awardId    奖品ID
+     * @param awardCount 奖品库存
+     */
+    private void cacheStrategyAwardCount(Long strategyId, Integer awardId, Integer awardCount) {
+        String cacheKey = Constants.RedisKey.STRATEGY_AWARD_COUNT_KEY + strategyId + Constants.UNDERLINE + awardId;
+        strategyRepository.cacheStrategyAwardCount(cacheKey, awardCount);
+    }
+
 
 
     /**
@@ -119,6 +141,18 @@ public class StrategyArmory  {
         // 通过生成的随机值，获取概率值奖品查找表的结果
         return strategyRepository.getStrategyAwardAssemble(key, new SecureRandom().nextInt(rateRange));
 
+    }
+
+
+    /**
+     * 扣减库存
+     * @param strategyId
+     * @param awardId
+     * @return
+     */
+    public Boolean subtractionAwardStock(Long strategyId, Integer awardId) {
+        String cacheKey = Constants.RedisKey.STRATEGY_AWARD_COUNT_KEY + strategyId + Constants.UNDERLINE + awardId;
+        return strategyRepository.subtractionAwardStock(cacheKey);
     }
 
 }

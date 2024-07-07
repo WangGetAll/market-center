@@ -3,19 +3,12 @@ package com.wjy.marketcenter.service;
 
 import com.wjy.marketcenter.entity.RaffleAwardEntity;
 import com.wjy.marketcenter.entity.RaffleFactorEntity;
-import com.wjy.marketcenter.entity.RuleActionEntity;
-import com.wjy.marketcenter.entity.StrategyEntity;
 import com.wjy.marketcenter.enums.ResponseCode;
 import com.wjy.marketcenter.exception.AppException;
 import com.wjy.marketcenter.repository.StrategyRepository;
-import com.wjy.marketcenter.service.IRaffleStrategy;
 import com.wjy.marketcenter.service.armory.StrategyArmory;
-import com.wjy.marketcenter.service.rule.chain.ILogicChain;
 import com.wjy.marketcenter.service.rule.chain.factory.DefaultChainFactory;
-import com.wjy.marketcenter.service.rule.filter.factory.DefaultLogicFactory;
 import com.wjy.marketcenter.service.rule.tree.factory.DefaultTreeFactory;
-import com.wjy.marketcenter.valobj.RuleLogicCheckTypeVO;
-import com.wjy.marketcenter.valobj.StrategyAwardRuleModelVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,7 +18,7 @@ import javax.annotation.Resource;
  * 抽奖策略抽象类，定义抽奖的标准流程
  */
 @Slf4j
-public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
+public abstract class AbstractRaffleStrategy implements IRaffleStrategy, IRaffleStock {
     @Resource
     protected StrategyRepository repository;
 

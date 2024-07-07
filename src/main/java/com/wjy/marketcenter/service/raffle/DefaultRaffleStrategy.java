@@ -7,6 +7,7 @@ import com.wjy.marketcenter.service.rule.tree.factory.DefaultTreeFactory;
 import com.wjy.marketcenter.service.rule.tree.factory.engine.IDecisionTreeEngine;
 import com.wjy.marketcenter.valobj.RuleTreeVO;
 import com.wjy.marketcenter.valobj.StrategyAwardRuleModelVO;
+import com.wjy.marketcenter.valobj.StrategyAwardStockKeyVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -39,4 +40,14 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
         IDecisionTreeEngine treeEngine = defaultTreeFactory.openLogicTree(ruleTreeVO);
         return treeEngine.process(userId, strategyId, awardId);
     }
+    @Override
+    public StrategyAwardStockKeyVO takeQueueValue() throws InterruptedException {
+        return repository.takeQueueValue();
+    }
+
+    @Override
+    public void updateStrategyAwardStock(Long strategyId, Integer awardId) {
+        repository.updateStrategyAwardStock(strategyId, awardId);
+    }
+
 }
