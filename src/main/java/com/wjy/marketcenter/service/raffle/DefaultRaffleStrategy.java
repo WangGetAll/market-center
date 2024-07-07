@@ -1,6 +1,9 @@
 package com.wjy.marketcenter.service.raffle;
 
+import com.wjy.marketcenter.entity.StrategyAwardEntity;
 import com.wjy.marketcenter.service.AbstractRaffleStrategy;
+import com.wjy.marketcenter.service.IRaffleAward;
+import com.wjy.marketcenter.service.IRaffleStock;
 import com.wjy.marketcenter.service.rule.chain.ILogicChain;
 import com.wjy.marketcenter.service.rule.chain.factory.DefaultChainFactory;
 import com.wjy.marketcenter.service.rule.tree.factory.DefaultTreeFactory;
@@ -11,6 +14,7 @@ import com.wjy.marketcenter.valobj.StrategyAwardStockKeyVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 /**
@@ -18,7 +22,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
+public class DefaultRaffleStrategy extends AbstractRaffleStrategy implements IRaffleAward, IRaffleStock {
 
     @Override
     public DefaultChainFactory.StrategyAwardVO raffleLogicChain(String userId, Long strategyId) {
@@ -48,6 +52,11 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
     @Override
     public void updateStrategyAwardStock(Long strategyId, Integer awardId) {
         repository.updateStrategyAwardStock(strategyId, awardId);
+    }
+
+    @Override
+    public List<StrategyAwardEntity> queryRaffleStrategyAwardList(Long strategyId) {
+        return repository.queryStrategyAwardList(strategyId);
     }
 
 }
