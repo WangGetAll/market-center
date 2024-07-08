@@ -1,10 +1,10 @@
 package com.wjy.marketcenter;
 
 import com.alibaba.fastjson.JSON;
-import com.wjy.marketcenter.service.armory.StrategyArmory;
-import com.wjy.marketcenter.service.rule.chain.ILogicChain;
-import com.wjy.marketcenter.service.rule.chain.factory.DefaultChainFactory;
-import com.wjy.marketcenter.service.rule.chain.impl.RuleWeightLogicChain;
+import com.wjy.marketcenter.service.strategy.armory.StrategyArmory;
+import com.wjy.marketcenter.service.strategy.rule.chain.ILogicChain;
+import com.wjy.marketcenter.service.strategy.rule.chain.factory.DefaultChainFactory;
+import com.wjy.marketcenter.service.strategy.rule.chain.impl.RuleWeightLogicChain;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;

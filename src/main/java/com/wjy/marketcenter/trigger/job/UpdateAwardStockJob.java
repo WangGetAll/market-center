@@ -1,6 +1,6 @@
 package com.wjy.marketcenter.trigger.job;
 
-import com.wjy.marketcenter.service.IRaffleStock;
+import com.wjy.marketcenter.service.strategy.IRaffleStock;
 import com.wjy.marketcenter.valobj.StrategyAwardStockKeyVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,8 +1,8 @@
 package com.wjy.marketcenter.infrastructure;
 
 import com.alibaba.fastjson.JSON;
-import com.wjy.marketcenter.mapper.IRaffleActivityOrderDao;
-import com.wjy.marketcenter.po.RaffleActivityOrder;
+import com.wjy.marketcenter.mapper.activity.IRaffleActivityOrderDao;
+import com.wjy.marketcenter.po.activity.RaffleActivityOrder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.RandomStringUtils;
 import org.jeasy.random.EasyRandom;

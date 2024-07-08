@@ -1,8 +1,8 @@
 package com.wjy.marketcenter;
 
 import com.alibaba.fastjson.JSON;
-import com.wjy.marketcenter.service.rule.tree.factory.DefaultTreeFactory;
-import com.wjy.marketcenter.service.rule.tree.factory.engine.IDecisionTreeEngine;
+import com.wjy.marketcenter.service.strategy.rule.tree.factory.DefaultTreeFactory;
+import com.wjy.marketcenter.service.strategy.rule.tree.factory.engine.IDecisionTreeEngine;
 import com.wjy.marketcenter.valobj.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

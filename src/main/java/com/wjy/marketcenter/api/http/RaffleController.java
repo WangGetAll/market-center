@@ -12,9 +12,9 @@ import com.wjy.marketcenter.entity.RaffleFactorEntity;
 import com.wjy.marketcenter.entity.StrategyAwardEntity;
 import com.wjy.marketcenter.enums.ResponseCode;
 import com.wjy.marketcenter.exception.AppException;
-import com.wjy.marketcenter.service.IRaffleAward;
-import com.wjy.marketcenter.service.IRaffleStrategy;
-import com.wjy.marketcenter.service.armory.StrategyArmory;
+import com.wjy.marketcenter.service.strategy.IRaffleAward;
+import com.wjy.marketcenter.service.strategy.IRaffleStrategy;
+import com.wjy.marketcenter.service.strategy.armory.StrategyArmory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
