@@ -1,6 +1,9 @@
 package com.wjy.marketcenter.redis;
 
 import org.redisson.api.*;
+
+import java.util.concurrent.TimeUnit;
+
 public interface RedisService {
 
     /**
@@ -258,6 +261,8 @@ public interface RedisService {
     <T> RBloomFilter<T> getBloomFilter(String key);
 
     Boolean setNx(String key);
+
+    Boolean setNx(String key, long expired, TimeUnit timeUnit);
 
 }
 
