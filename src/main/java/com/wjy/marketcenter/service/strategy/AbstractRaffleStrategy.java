@@ -6,7 +6,7 @@ import com.wjy.marketcenter.entity.RaffleFactorEntity;
 import com.wjy.marketcenter.entity.StrategyAwardEntity;
 import com.wjy.marketcenter.enums.ResponseCode;
 import com.wjy.marketcenter.exception.AppException;
-import com.wjy.marketcenter.repository.StrategyRepository;
+import com.wjy.marketcenter.repository.strategy.StrategyRepository;
 import com.wjy.marketcenter.service.strategy.armory.StrategyArmory;
 import com.wjy.marketcenter.service.strategy.rule.chain.factory.DefaultChainFactory;
 import com.wjy.marketcenter.service.strategy.rule.tree.factory.DefaultTreeFactory;

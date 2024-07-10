@@ -23,7 +23,7 @@ public class ActivityArmory implements IActivityArmory, IActivityDispatch {
     public boolean assembleActivitySku(Long sku) {
         // 预热活动sku库存, sku库存关联了活动（什么活动）和次数（给用户增加多少次）
         ActivitySkuEntity activitySkuEntity = activityRepository.queryActivitySku(sku);
-        cacheActivitySkuStockCount(sku, activitySkuEntity.getStockCount());
+        cacheActivitySkuStockCount(sku, activitySkuEntity.getStockCountSurplus());
 
         // 预热活动【查询时预热到缓存】，活动中有活动的开始时间、结束时间、状态
         activityRepository.queryRaffleActivityByActivityId(activitySkuEntity.getActivityId());

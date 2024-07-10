@@ -1,7 +1,7 @@
 package com.wjy.marketcenter.service.strategy.rule.chain.factory;
 
 import com.wjy.marketcenter.entity.StrategyEntity;
-import com.wjy.marketcenter.repository.StrategyRepository;
+import com.wjy.marketcenter.repository.strategy.StrategyRepository;
 import com.wjy.marketcenter.service.strategy.rule.chain.ILogicChain;
 import lombok.*;
 import org.springframework.stereotype.Service;

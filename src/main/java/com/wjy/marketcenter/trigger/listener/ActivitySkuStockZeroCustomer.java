@@ -2,8 +2,8 @@ package com.wjy.marketcenter.trigger.listener;
 
 import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson2.JSON;
-import com.wjy.marketcenter.envent.BaseEvent;
-import com.wjy.marketcenter.service.activity.ISkuStock;
+import com.wjy.marketcenter.event.BaseEvent;
+import com.wjy.marketcenter.service.activity.IRaffleActivitySkuStockService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -23,7 +23,7 @@ public class ActivitySkuStockZeroCustomer {
     private String topic;
 
     @Resource
-    private ISkuStock skuStock;
+    private IRaffleActivitySkuStockService skuStock;
 
     // 队列的名字是activity_sku_stock_zero，队列不存在会自动创建
     @RabbitListener(queuesToDeclare = @Queue(value = "activity_sku_stock_zero"))

@@ -1,6 +1,6 @@
 package com.wjy.marketcenter.service.strategy.rule.tree.impl;
 
-import com.wjy.marketcenter.repository.StrategyRepository;
+import com.wjy.marketcenter.repository.strategy.StrategyRepository;
 import com.wjy.marketcenter.service.strategy.armory.StrategyArmory;
 import com.wjy.marketcenter.service.strategy.rule.tree.ILogicTreeNode;
 import com.wjy.marketcenter.service.strategy.rule.tree.factory.DefaultTreeFactory;

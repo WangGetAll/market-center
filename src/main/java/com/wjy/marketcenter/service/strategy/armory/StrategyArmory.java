@@ -6,7 +6,7 @@ import com.wjy.marketcenter.entity.StrategyEntity;
 import com.wjy.marketcenter.entity.StrategyRuleEntity;
 import com.wjy.marketcenter.enums.ResponseCode;
 import com.wjy.marketcenter.exception.AppException;
-import com.wjy.marketcenter.repository.StrategyRepository;
+import com.wjy.marketcenter.repository.strategy.StrategyRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

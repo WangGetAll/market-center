@@ -1,7 +1,7 @@
 package com.wjy.marketcenter.service.strategy.rule.chain.impl;
 
 import com.wjy.marketcenter.common.Constants;
-import com.wjy.marketcenter.repository.StrategyRepository;
+import com.wjy.marketcenter.repository.strategy.StrategyRepository;
 import com.wjy.marketcenter.service.strategy.rule.chain.AbstractLogicChain;
 import com.wjy.marketcenter.service.strategy.rule.chain.factory.DefaultChainFactory;
 import lombok.extern.slf4j.Slf4j;
