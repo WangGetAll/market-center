@@ -14,7 +14,7 @@ import com.wjy.marketcenter.service.activity.IRaffleActivityPartakeService;
 import com.wjy.marketcenter.service.activity.armory.IActivityArmory;
 import com.wjy.marketcenter.service.award.IAwardService;
 import com.wjy.marketcenter.service.strategy.IRaffleStrategy;
-import com.wjy.marketcenter.service.strategy.armory.StrategyArmory;
+import com.wjy.marketcenter.service.strategy.armory.IStrategyArmory;
 import com.wjy.marketcenter.valobj.award.AwardStateVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -41,7 +41,7 @@ public class RaffleActivityController implements IRaffleActivityService {
     @Resource
     private IActivityArmory activityArmory;
     @Resource
-    private StrategyArmory strategyArmory;
+    private IStrategyArmory strategyArmory;
 
     /**
      * 活动装配 - 数据预热 | 把活动配置的对应的 sku 一起装配

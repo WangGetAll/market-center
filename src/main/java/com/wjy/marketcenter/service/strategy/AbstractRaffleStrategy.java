@@ -7,7 +7,7 @@ import com.wjy.marketcenter.entity.StrategyAwardEntity;
 import com.wjy.marketcenter.enums.ResponseCode;
 import com.wjy.marketcenter.exception.AppException;
 import com.wjy.marketcenter.repository.strategy.StrategyRepository;
-import com.wjy.marketcenter.service.strategy.armory.StrategyArmory;
+import com.wjy.marketcenter.service.strategy.armory.IStrategyDispatch;
 import com.wjy.marketcenter.service.strategy.rule.chain.factory.DefaultChainFactory;
 import com.wjy.marketcenter.service.strategy.rule.tree.factory.DefaultTreeFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
     protected StrategyRepository repository;
 
     @Resource
-    protected StrategyArmory strategyArmory;
+    protected IStrategyDispatch strategyDispatch;
 
 
     @Resource
