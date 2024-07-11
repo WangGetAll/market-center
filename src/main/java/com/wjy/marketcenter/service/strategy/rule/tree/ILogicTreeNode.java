@@ -2,6 +2,8 @@ package com.wjy.marketcenter.service.strategy.rule.tree;
 
 import com.wjy.marketcenter.service.strategy.rule.tree.factory.DefaultTreeFactory;
 
+import java.util.Date;
+
 /**
  * 规则树结点接口，定义处理方法
  */
@@ -14,6 +16,6 @@ public interface ILogicTreeNode {
      * @param awardId
      * @return
      */
-    DefaultTreeFactory.TreeActionEntity logic(String userId, Long strategyId, Integer awardId, String ruleValue);
+    DefaultTreeFactory.TreeActionEntity logic(String userId, Long strategyId, Integer awardId, String ruleValue, Date endDateTime);
 }
 

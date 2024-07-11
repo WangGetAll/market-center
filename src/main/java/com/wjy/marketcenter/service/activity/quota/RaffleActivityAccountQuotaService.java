@@ -75,6 +75,17 @@ public class RaffleActivityAccountQuotaService extends AbstractRaffleActivityAcc
         activityRepository.clearActivitySkuStock(sku);
     }
 
+    /**
+     * 根据用户id、活动id、day查询用户的日参与次数（总次数-剩余次数）
+     * @param activityId 活动ID
+     * @param userId     用户ID
+     * @return
+     */
+    @Override
+    public Integer queryRaffleActivityAccountDayPartakeCount(Long activityId, String userId) {
+        return activityRepository.queryRaffleActivityAccountDayPartakeCount(activityId, userId);
+    }
+
 
 }
 

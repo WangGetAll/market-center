@@ -13,4 +13,11 @@ public interface RuleTreeNodeMapper {
      * @return
      */
     List<RuleTreeNode> queryRuleTreeNodeListByTreeId(String treeId);
+
+    /**
+     * 根据rule_key为"rule_lock"和tree_id in(treeIds)，查tule_tree_node表，得到rule_value
+     * @param treeIds
+     * @return
+     */
+    List<RuleTreeNode> queryRuleLocks(String[] treeIds);
 }

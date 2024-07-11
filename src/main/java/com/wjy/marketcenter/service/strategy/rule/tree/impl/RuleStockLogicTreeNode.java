@@ -1,6 +1,7 @@
 package com.wjy.marketcenter.service.strategy.rule.tree.impl;
 
 import com.wjy.marketcenter.repository.strategy.StrategyRepository;
+import com.wjy.marketcenter.service.strategy.armory.IStrategyDispatch;
 import com.wjy.marketcenter.service.strategy.armory.StrategyArmory;
 import com.wjy.marketcenter.service.strategy.rule.tree.ILogicTreeNode;
 import com.wjy.marketcenter.service.strategy.rule.tree.factory.DefaultTreeFactory;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  *
@@ -22,14 +24,15 @@ public class RuleStockLogicTreeNode implements ILogicTreeNode {
     private StrategyRepository strategyRepository;
 
     @Resource
-    private StrategyArmory strategyArmory;
+    private IStrategyDispatch strategyDispatch;
+
 
 
     @Override
-    public DefaultTreeFactory.TreeActionEntity logic(String userId, Long strategyId, Integer awardId, String ruleValue) {
+    public DefaultTreeFactory.TreeActionEntity logic(String userId, Long strategyId, Integer awardId, String ruleValue, Date endDateTime) {
         log.info("规则过滤-库存扣减 userId:{} strategyId:{} awardId:{}", userId, strategyId, awardId);
         // 扣减库存
-        Boolean status = strategyArmory.subtractionAwardStock(strategyId, awardId);
+        Boolean status = strategyDispatch.subtractionAwardStock(strategyId, awardId, endDateTime);
         // true；库存扣减成功，TAKE_OVER 规则节点接管，返回奖品ID，奖品规则配置
         if (status) {
             log.info("规则过滤-库存扣减-成功 userId:{} strategyId:{} awardId:{}", userId, strategyId, awardId);
