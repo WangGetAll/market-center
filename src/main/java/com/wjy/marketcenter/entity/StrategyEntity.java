@@ -31,6 +31,11 @@ public class StrategyEntity {
         return ruleModels.split(Constants.SPLIT);
     }
 
+    /**
+     * 返回规则配置的规则中是否有rule_weight3
+     * 有就返回“rule_weight”,没有返回null
+     * @return
+     */
     public String getRuleWeight() {
         String[] ruleModels = this.ruleModels();
         if (null == ruleModels) return null;

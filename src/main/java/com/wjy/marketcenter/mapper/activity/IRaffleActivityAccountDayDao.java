@@ -9,6 +9,11 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface IRaffleActivityAccountDayDao {
+    /**
+     * 根据用户id、活动id、day查询raffle_activity_account_day表，得到用户的日次数
+     * @param raffleActivityAccountDayReq
+     * @return
+     */
     @DBRouter
     RaffleActivityAccountDay queryActivityAccountDayByUserId(RaffleActivityAccountDay raffleActivityAccountDayReq);
 

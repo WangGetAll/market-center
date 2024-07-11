@@ -12,11 +12,16 @@ public interface IRaffleActivityAccountDao {
 
     int updateAccountQuota(RaffleActivityAccount raffleActivityAccount);
 
+    /**
+     * 根据用户id、活动id查询raffle_activity_account表，得到用户在该活动的抽奖次数
+     * @param raffleActivityAccountReq
+     * @return
+     */
     @DBRouter
     RaffleActivityAccount queryActivityAccountByUserId(RaffleActivityAccount raffleActivityAccountReq);
 
     /**
-     *  减少用户在某个活动上的总剩余抽奖次数
+     *  根据userId、activityId、总/月/日剩余抽奖次数大于0更新raffle_activity_account表，将总/月/日剩余抽奖次数都减一。
      * @param raffleActivityAccount
      * @return
      */

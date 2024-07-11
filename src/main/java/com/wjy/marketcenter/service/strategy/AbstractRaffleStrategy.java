@@ -69,6 +69,7 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
         StrategyAwardEntity strategyAward = repository.queryStrategyAwardEntity(strategyId, awardId);
         return RaffleAwardEntity.builder()
                 .awardId(awardId)
+                .awardTitle(strategyAward.getAwardTitle())
                 .awardConfig(awardConfig)
                 .sort(strategyAward.getSort())
                 .build();
@@ -77,8 +78,18 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
 
 
     /**
-     * 抽奖计算，责任链抽象方法
-     *
+     * 1. 根据strategyId拿到责任链
+     *  1.1 根据strategyId查strategy表，获得该策略配置的规则
+     *  1.2 根据配置的规则，装配责任链返回
+     * 2. 执行责任链
+     *  2.1 黑名单处理器
+     *      2.1.1. 根据策略id、规则名称为黑名单查询strategy_rule表，获得具体规则配置
+     *      2.1.2. 解析配置，判断用户是否在黑名单中，如果在则返回兜底奖励，不在放行
+     *  2.2 积分处理器
+     *      2.2.1. 根据策略id、规则名称为黑名单查询strategy_rule表，获得具体规则配置
+     *      2.2.2. 解析配置，如果用户的积分大于等于某个积分值，执行积分值内规定的奖品抽奖，否则放行
+     *  2.3 默认处理器
+     *      2.3.1. 执行默认抽奖
      * @param userId     用户ID
      * @param strategyId 策略ID
      * @return 奖品ID

@@ -28,7 +28,9 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
     }
 
     /**
-     * 决策树运行
+     *
+     * 获取一个结点，结点中有具体规则配置，通过结点的名字获取一个处理器
+     * 将规则传入处理器中进行处理，根据处理结果获得下一个处理器进行处理
      * @param userId
      * @param strategyId
      * @param awardId

@@ -9,9 +9,19 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface IRaffleActivityAccountMonthDao {
+    /**
+     * 根据userId、activityId、month查raffle_activity_account_month表，获得用户在该活动上某月的抽奖次数
+     * @param raffleActivityAccountMonthReq
+     * @return
+     */
     @DBRouter
     RaffleActivityAccountMonth queryActivityAccountMonthByUserId(RaffleActivityAccountMonth raffleActivityAccountMonthReq);
 
+    /**
+     * 根据userId、activityId、month、month_count_surplus>0更新raffle_activity_account_month表，将month_count_surplus减一
+     * @param raffleActivityAccountMonth
+     * @return
+     */
     int updateActivityAccountMonthSubtractionQuota(RaffleActivityAccountMonth raffleActivityAccountMonth);
 
     /**

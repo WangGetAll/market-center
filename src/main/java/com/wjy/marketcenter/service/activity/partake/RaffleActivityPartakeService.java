@@ -25,23 +25,19 @@ public class RaffleActivityPartakeService extends AbstractRaffleActivityPartake{
 
     @Override
     protected CreatePartakeOrderAggregate doFilterAccount(String userId, Long activityId, Date currentDate) {
-        // 查询总账户额度
+        // 查询用户总抽奖次数
         ActivityAccountEntity activityAccountEntity = activityRepository.queryActivityAccountByUserId(userId, activityId);
-
         // 额度判断（只判断总剩余额度）
         if (null == activityAccountEntity || activityAccountEntity.getTotalCountSurplus() <= 0) {
             throw new AppException(ResponseCode.ACCOUNT_QUOTA_ERROR.getCode(), ResponseCode.ACCOUNT_QUOTA_ERROR.getInfo());
         }
 
+        // 查询用户月抽奖次数
         String month = dateFormatMonth.format(currentDate);
-        String day = dateFormatDay.format(currentDate);
-
-        // 查询月账户额度
         ActivityAccountMonthEntity activityAccountMonthEntity = activityRepository.queryActivityAccountMonthByUserId(userId, activityId, month);
         if (null != activityAccountMonthEntity && activityAccountMonthEntity.getMonthCountSurplus() <= 0) {
             throw new AppException(ResponseCode.ACCOUNT_MONTH_QUOTA_ERROR.getCode(), ResponseCode.ACCOUNT_MONTH_QUOTA_ERROR.getInfo());
         }
-
         // 创建月账户额度；true = 存在月账户、false = 不存在月账户
         boolean isExistAccountMonth = null != activityAccountMonthEntity;
         if (null == activityAccountMonthEntity) {
@@ -54,11 +50,11 @@ public class RaffleActivityPartakeService extends AbstractRaffleActivityPartake{
         }
 
         // 查询日账户额度
+        String day = dateFormatDay.format(currentDate);
         ActivityAccountDayEntity activityAccountDayEntity = activityRepository.queryActivityAccountDayByUserId(userId, activityId, day);
         if (null != activityAccountDayEntity && activityAccountDayEntity.getDayCountSurplus() <= 0) {
             throw new AppException(ResponseCode.ACCOUNT_DAY_QUOTA_ERROR.getCode(), ResponseCode.ACCOUNT_DAY_QUOTA_ERROR.getInfo());
         }
-
         // 创建月账户额度；true = 存在月账户、false = 不存在月账户
         boolean isExistAccountDay = null != activityAccountDayEntity;
         if (null == activityAccountDayEntity) {

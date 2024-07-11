@@ -22,13 +22,15 @@ public class DefaultChainFactory {
     }
 
     /**
-     * 通过策略ID，构建责任链
-     *
+     * 1. 根据strategyId查strategy表，获得该策略配置的规则
+     * 2. 装配责任链
+     *  2.1. 如果没有给策略配置规则，则只装填一个默认责任链，返回
+     *  2.2.
      * @param strategyId 策略ID
      * @return LogicChain
      */
     public ILogicChain openLogicChain(Long strategyId) {
-        // 根据策略id查询得到此策略配置的规则
+        // 根据strategyId查strategy表，获得该策略配置的规则
         StrategyEntity strategy = repository.queryStrategyEntityByStrategyId(strategyId);
         String[] ruleModels = strategy.ruleModels();
 

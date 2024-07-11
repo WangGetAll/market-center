@@ -6,5 +6,10 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface IRaffleActivityCountDao {
+    /**
+     * 根据activityCountId查询次增长策略
+     * @param activityCountId
+     * @return
+     */
     RaffleActivityCount queryRaffleActivityCountByActivityCountId(Long activityCountId);
 }

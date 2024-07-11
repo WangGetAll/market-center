@@ -24,10 +24,17 @@ public class StrategyArmory  {
     private StrategyRepository strategyRepository;
 
     private final SecureRandom secureRandom = new SecureRandom();
+
+    /**
+     * 缓存奖品库存， key:strategyId_awardId,value:库存
+     * 缓存该策略下抽奖时的生成随机数的最大值，key为策略id，value为最大值。
+     * 缓存该策略下生成的随机数对应的奖品id，key为策略id，filed为生成的随机数，value为奖品id
+     * @param strategyId
+     * @return
+     */
     public boolean assembleLotteryStrategy(Long strategyId) {
         //  查询策略对应的奖品信息
         List<StrategyAwardEntity> strategyAwardEntities = strategyRepository.queryStrategyAwardList(strategyId);
-
         // 缓存奖品库存【用于decr扣减库存使用】
         for (StrategyAwardEntity strategyAward : strategyAwardEntities) {
             Integer awardId = strategyAward.getAwardId();
@@ -35,9 +42,11 @@ public class StrategyArmory  {
             cacheStrategyAwardCount(strategyId, awardId, awardCount);
         }
 
-        //  装载
+        //  缓存该策略下抽奖时的生成随机数的最大值，key为策略id，value为最大值。
+        //  缓存该策略下生成的随机数对应的奖品id，key为策略id，filed为生成的随机数，value为奖品id
         assembleLotteryStrategy(String.valueOf(strategyId), strategyAwardEntities);
-        // 查询策略信息
+
+        // 查询策略信息配置的规则信息
         StrategyEntity strategyEntity = strategyRepository.queryStrategyEntityByStrategyId(strategyId);
         // 获取策略的权重规则
         String ruleWeight = strategyEntity.getRuleWeight();
@@ -47,14 +56,16 @@ public class StrategyArmory  {
         if (null == strategyRuleEntity) {
             throw new AppException(ResponseCode.STRATEGY_RULE_WEIGHT_IS_NULL.getCode(), ResponseCode.STRATEGY_RULE_WEIGHT_IS_NULL.getInfo());
         }
-        // 解析具体配置到map。key：积分，value：可以抽的奖品idList
+        // 解析具体配置到map。key：积分：奖品id1，奖品id2...，value：可以抽的奖品id的List
         Map<String, List<Integer>> ruleWeightValueMap = strategyRuleEntity.getRuleWeightValues();
         Set<String> keys = ruleWeightValueMap.keySet();
         for (String key : keys) {
             List<Integer> ruleWeightValues = ruleWeightValueMap.get(key);
             ArrayList<StrategyAwardEntity> strategyAwardEntitiesClone = new ArrayList<>(strategyAwardEntities);
+            // 去掉权重规则下，不存在的奖品信息
             strategyAwardEntitiesClone.removeIf(entity -> !ruleWeightValues.contains(entity.getAwardId()));
-            // 装载
+            // 缓存该策略+积分下下抽奖时的生成随机数的最大值，key为策略id，value为最大值。
+            // 缓存该策略+积分下下生成的随机数对应的奖品id，key为策略id，filed为生成的随机数，value为奖品id
             assembleLotteryStrategy(String.valueOf(strategyId).concat("_").concat(key), strategyAwardEntitiesClone);
         }
 
@@ -64,7 +75,8 @@ public class StrategyArmory  {
 
     /**
      * 缓存奖品库存到Redis
-     *
+     * key为strategyId_awardId
+     * value为此策略下该奖品的库存
      * @param strategyId 策略ID
      * @param awardId    奖品ID
      * @param awardCount 奖品库存
@@ -77,9 +89,10 @@ public class StrategyArmory  {
 
 
     /**
-     *  装配策略，将策略或策略+权重规则对应的抽奖时可以生成的随机数的最大值、随机数与奖品id的存入redis
-     *  触发时机为：活动审核通过后
-     * @param key
+     * 缓存该策略下抽奖时的生成随机数的最大值，key为策略id，value为最大值。
+     * 缓存该策略下生成的随机数对应的奖品id，key为策略id，filed为生成的随机数，value为奖品id
+     * @param key 策略id或者策略id_积分：奖品id,奖品id,奖品id
+     * @param strategyAwardEntities 策略下的奖品信息
      * @return
      */
     private boolean assembleLotteryStrategy(String key,  List<StrategyAwardEntity> strategyAwardEntities) {
@@ -115,6 +128,7 @@ public class StrategyArmory  {
         strategyRepository.storeStrategyAwardSearchRateTable(key, shuffleStrategyAwardSearchRateTable.size(), shuffleStrategyAwardSearchRateTable);
         return true;
     }
+
 
     /**
      * 在某种策略下，生成随机数，进而获得抽奖结果（奖品id）
@@ -153,6 +167,19 @@ public class StrategyArmory  {
     public Boolean subtractionAwardStock(Long strategyId, Integer awardId) {
         String cacheKey = Constants.RedisKey.STRATEGY_AWARD_COUNT_KEY + strategyId + Constants.UNDERLINE + awardId;
         return strategyRepository.subtractionAwardStock(cacheKey);
+    }
+
+    /**
+     * 根据activityId查询出strategyId。然后根据策略id。
+     * 缓存奖品库存， key:strategyId_awardId,value:库存
+     * 缓存该策略下抽奖时的生成随机数的最大值，key为策略id，value为最大值。
+     * 缓存该策略下生成的随机数对应的奖品id，key为策略id，filed为生成的随机数，value为奖品id
+     * @param activityId
+     * @return
+     */
+    public boolean assembleLotteryStrategyByActivityId(Long activityId) {
+        Long strategyId = strategyRepository.queryStrategyIdByActivityId(activityId);
+        return assembleLotteryStrategy(strategyId);
     }
 
 }

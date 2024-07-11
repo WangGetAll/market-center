@@ -8,7 +8,10 @@ import com.wjy.marketcenter.entity.StrategyEntity;
 import com.wjy.marketcenter.entity.StrategyRuleEntity;
 import com.wjy.marketcenter.exception.AppException;
 import com.wjy.marketcenter.mapper.*;
+import com.wjy.marketcenter.mapper.activity.IRaffleActivityAccountDayDao;
+import com.wjy.marketcenter.mapper.activity.IRaffleActivityDao;
 import com.wjy.marketcenter.po.*;
+import com.wjy.marketcenter.po.activity.RaffleActivityAccountDay;
 import com.wjy.marketcenter.redis.RedisService;
 import com.wjy.marketcenter.valobj.*;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,10 @@ import static com.wjy.marketcenter.enums.ResponseCode.UN_ASSEMBLED_STRATEGY_ARMO
 @Slf4j
 @Repository
 public class StrategyRepository  {
+    @Resource
+    private IRaffleActivityDao raffleActivityDao;
+    @Resource
+    private IRaffleActivityAccountDayDao raffleActivityAccountDayDao;
 
     @Resource
     private StrategyAwardMapper strategyAwardMapper;
@@ -80,10 +87,11 @@ public class StrategyRepository  {
     }
 
     /**
-     *
-     * @param key
-     * @param rateRange
-     * @param strategyAwardSearchRateTable
+     * 缓存该策略下抽奖时的生成随机数的最大值。key为策略id，value为最大值
+     * 缓存该策略下生成的随机数对应的奖品id。key为策略id，filed为生成的随机数，value为奖品id
+     * @param key 策略id
+     * @param rateRange 抽奖时生成的随机值的最大值
+     * @param strategyAwardSearchRateTable map，key为抽奖时生成的随机值，value为奖品id
      */
     public void storeStrategyAwardSearchRateTable(String key, Integer rateRange, Map<Integer, Integer> strategyAwardSearchRateTable) {
         // 1. 存储抽奖策略范围值，如10000，用于生成1000以内的随机数
@@ -129,7 +137,7 @@ public class StrategyRepository  {
 
 
     /**
-     * 根据策略id，查询策略信息
+     * 根据策略id，查询策略信息（策略名称、策略配置的规则）【优先走缓存，未命中加载】
      * @param strategyId
      * @return
      */
@@ -152,7 +160,7 @@ public class StrategyRepository  {
 
 
     /**
-     * 根据策略id和规则，查询规则信息
+     * 根据策略id和规则，查询规则的具体信息
      * @param strategyId
      * @param ruleModel
      * @return
@@ -198,7 +206,7 @@ public class StrategyRepository  {
     }
 
     /**
-     * 根据策略id、奖品id，strategy_award表中查询规则的名字
+     * 根据策略id、奖品id查询strategy_award表，得到规则树id
      * @param awardId
      * @return
      */
@@ -213,7 +221,14 @@ public class StrategyRepository  {
     }
 
     /**
-     * 根据treeid查询tree
+     * 1. 查询规则树信息
+     *  1.1 根据treeId查rule_tree表，得到得到规则树的详细信息
+     *  1.2 根据treeId查询rule_tree_node表，得到规则树下的所有结点
+     *  1.3 根据treeId查rule_tree_node_line表，得到规则树中的所有边
+     * 2. 组装树对象
+     *  2.1. 把所有边组装到边map中，key为结点的起点的名字，value为起点相同的边的list
+     *  2.2. 把所有点组装到点map中，key为结点的名字，value为结点对象。结点对象中由上一步边map中的list
+     *  2.3. 组装树对象，树对象中，有根节点对象，和上一步的点map
      * @param treeId
      * @return
      */
@@ -368,6 +383,38 @@ public class StrategyRepository  {
         redisService.setValue(cacheKey, strategyAwardEntity);
         // 返回数据
         return strategyAwardEntity;
+    }
+
+
+    /**
+     * 根据activityId查询策略id
+     * @param activityId
+     * @return
+     */
+    public Long queryStrategyIdByActivityId(Long activityId) {
+        return raffleActivityDao.queryStrategyIdByActivityId(activityId);
+    }
+
+    /**
+     * 根据策略id，查raffle_activity表，得到活动id
+     * 根据用户id、活动id、day查询raffle_activity_account_day表，得到用户的日次数
+     * 总次数减剩余次数得到用户当天的抽奖次数
+     * @param userId
+     * @param strategyId
+     * @return
+     */
+    public Integer queryTodayUserRaffleCount(String userId, Long strategyId) {
+        // 活动ID
+        Long activityId = raffleActivityDao.queryActivityIdByStrategyId(strategyId);
+        // 封装参数
+        RaffleActivityAccountDay raffleActivityAccountDayReq = new RaffleActivityAccountDay();
+        raffleActivityAccountDayReq.setUserId(userId);
+        raffleActivityAccountDayReq.setActivityId(activityId);
+        raffleActivityAccountDayReq.setDay(raffleActivityAccountDayReq.currentDay());
+        RaffleActivityAccountDay raffleActivityAccountDay = raffleActivityAccountDayDao.queryActivityAccountDayByUserId(raffleActivityAccountDayReq);
+        if (null == raffleActivityAccountDay) return 0;
+        // 总次数 - 剩余的，等于今日参与的
+        return raffleActivityAccountDay.getDayCount() - raffleActivityAccountDay.getDayCountSurplus();
     }
 
 }

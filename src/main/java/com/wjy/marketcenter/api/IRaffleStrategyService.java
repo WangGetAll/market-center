@@ -2,8 +2,8 @@ package com.wjy.marketcenter.api;
 
 import com.wjy.marketcenter.api.dto.RaffleAwardListRequestDTO;
 import com.wjy.marketcenter.api.dto.RaffleAwardListResponseDTO;
-import com.wjy.marketcenter.api.dto.RaffleRequestDTO;
-import com.wjy.marketcenter.api.dto.RaffleResponseDTO;
+import com.wjy.marketcenter.api.dto.RaffleStrategyRequestDTO;
+import com.wjy.marketcenter.api.dto.RaffleStrategyResponseDTO;
 import com.wjy.marketcenter.common.Response;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  *  抽奖服务接口
  */
-public interface IRaffleService {
+public interface IRaffleStrategyService {
 
     /**
      * 策略装配接口
@@ -35,6 +35,6 @@ public interface IRaffleService {
      * @param requestDTO 请求参数
      * @return 抽奖结果
      */
-    Response<RaffleResponseDTO> randomRaffle(RaffleRequestDTO requestDTO);
+    Response<RaffleStrategyResponseDTO> randomRaffle(RaffleStrategyRequestDTO requestDTO);
 
 }

@@ -24,7 +24,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -62,8 +64,6 @@ public class ActivityRepository implements IActivityRepository {
 
     @Resource
     private IRaffleActivityAccountDayDao raffleActivityAccountDayDao;
-
-
 
     @Override
     public ActivitySkuEntity queryActivitySku(Long sku) {
@@ -365,7 +365,7 @@ public class ActivityRepository implements IActivityRepository {
                             throw new AppException(ResponseCode.ACCOUNT_MONTH_QUOTA_ERROR.getCode(), ResponseCode.ACCOUNT_MONTH_QUOTA_ERROR.getInfo());
                         }
                     } else {
-                        // 不存在，新建月账户
+                        // 不存在，新建月账户，月总次数为总次数表中的月总次数，月剩余次为总次数表中的月剩余次数减一。
                         raffleActivityAccountMonthDao.insertActivityAccountMonth(RaffleActivityAccountMonth.builder()
                                 .userId(activityAccountMonthEntity.getUserId())
                                 .activityId(activityAccountMonthEntity.getActivityId())
@@ -433,6 +433,20 @@ public class ActivityRepository implements IActivityRepository {
         }
     }
 
+    @Override
+    public List<ActivitySkuEntity> queryActivitySkuListByActivityId(Long activityId) {
+        List<RaffleActivitySku> raffleActivitySkus = raffleActivitySkuDao.queryActivitySkuListByActivityId(activityId);
+        List<ActivitySkuEntity> activitySkuEntities = new ArrayList<>(raffleActivitySkus.size());
+        for (RaffleActivitySku raffleActivitySku:raffleActivitySkus){
+            ActivitySkuEntity activitySkuEntity = new ActivitySkuEntity();
+            activitySkuEntity.setSku(raffleActivitySku.getSku());
+            activitySkuEntity.setActivityCountId(raffleActivitySku.getActivityCountId());
+            activitySkuEntity.setStockCount(raffleActivitySku.getStockCount());
+            activitySkuEntity.setStockCountSurplus(raffleActivitySku.getStockCountSurplus());
+            activitySkuEntities.add(activitySkuEntity);
+        }
+        return activitySkuEntities;
+    }
 
 
 }

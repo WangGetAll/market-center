@@ -22,6 +22,19 @@ public class AwardService implements IAwardService {
     @Resource
     private SendAwardMessageEvent sendAwardMessageEvent;
 
+    /**
+     * 1. 构建中奖事件消息对象
+     * 2. 构建中奖任务对象
+     * 3. 构建聚合对象（用户中奖对象，中奖任务对象），落库
+     *   3.1. user_award_record表中新增记录
+     *   3.2. task表中新增记录，状态为created
+     *   3.3  更新抽奖单状态为used
+     *   3.3. 发送中奖MQ
+     *   3.4. 更新task记录，状态变更为completed
+     *   3.5. 如果发送MQ失败，更新task记录，状态变更为fail
+     *   3.6. 定时任务，扫描task表，重新执行3，4步操作
+     * @param userAwardRecordEntity
+     */
     @Override
     public void saveUserAwardRecord(UserAwardRecordEntity userAwardRecordEntity) {
         // 构建消息对象
