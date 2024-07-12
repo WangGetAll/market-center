@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.mapper.rebate;
+package com.wjy.marketcenter.dao.rebate;
 
 import com.wjy.marketcenter.po.rebate.DailyBehaviorRebate;
 import org.apache.ibatis.annotations.Mapper;

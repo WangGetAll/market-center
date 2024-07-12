@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.mapper;
+package com.wjy.marketcenter.dao;
 
 import com.wjy.marketcenter.po.RuleTree;
 import org.apache.ibatis.annotations.Mapper;

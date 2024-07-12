@@ -2,7 +2,7 @@ package com.wjy.marketcenter.infrastructure;
 
 import com.alibaba.fastjson.JSON;
 import com.wjy.marketcenter.po.Award;
-import com.wjy.marketcenter.mapper.AwardMapper;
+import com.wjy.marketcenter.dao.IAwardDao;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,13 +15,13 @@ import java.util.List;
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AwardMapperTest {
+public class IAwardDaoTest {
     @Resource
-    private AwardMapper awardMapper;
+    private IAwardDao IAwardDao;
 
     @Test
     public void test_queryAwardList() {
-        List<Award> awards = awardMapper.queryAwardList();
+        List<Award> awards = IAwardDao.queryAwardList();
         Award award = new Award();
         log.info("测试结果：{}", JSON.toJSONString(awards));
     }

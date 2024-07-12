@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.mapper.activity;
+package com.wjy.marketcenter.dao.activity;
 import com.wjy.marketcenter.po.activity.RaffleActivityCount;
 import org.apache.ibatis.annotations.Mapper;
 /**

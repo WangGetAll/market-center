@@ -1,5 +1,6 @@
 package com.wjy.marketcenter.service.award;
 
+import com.wjy.marketcenter.entity.award.DistributeAwardEntity;
 import com.wjy.marketcenter.entity.award.UserAwardRecordEntity;
 
 /**
@@ -8,6 +9,12 @@ import com.wjy.marketcenter.entity.award.UserAwardRecordEntity;
 public interface IAwardService {
 
     void saveUserAwardRecord(UserAwardRecordEntity userAwardRecordEntity);
+
+    /**
+     * 配送发货奖品
+     */
+    void distributeAward(DistributeAwardEntity distributeAwardEntity);
+
 
 }
 

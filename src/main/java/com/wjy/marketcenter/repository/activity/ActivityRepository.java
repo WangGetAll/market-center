@@ -9,7 +9,7 @@ import com.wjy.marketcenter.enums.ResponseCode;
 import com.wjy.marketcenter.event.ActivitySkuStockZeroMessageEvent;
 import com.wjy.marketcenter.event.EventPublisher;
 import com.wjy.marketcenter.exception.AppException;
-import com.wjy.marketcenter.mapper.activity.*;
+import com.wjy.marketcenter.dao.activity.*;
 import com.wjy.marketcenter.po.activity.*;
 import com.wjy.marketcenter.redis.RedisService;
 import com.wjy.marketcenter.valobj.activity.ActivitySkuStockKeyVO;

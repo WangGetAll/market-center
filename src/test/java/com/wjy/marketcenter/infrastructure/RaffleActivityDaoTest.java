@@ -2,7 +2,7 @@ package com.wjy.marketcenter.infrastructure;
 
 import com.alibaba.fastjson2.JSON;
 
-import com.wjy.marketcenter.mapper.activity.IRaffleActivityDao;
+import com.wjy.marketcenter.dao.activity.IRaffleActivityDao;
 import com.wjy.marketcenter.po.activity.RaffleActivity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

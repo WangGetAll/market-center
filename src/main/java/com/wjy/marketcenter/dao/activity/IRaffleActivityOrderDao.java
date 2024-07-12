@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.mapper.activity;
+package com.wjy.marketcenter.dao.activity;
 
 import cn.bugstack.middleware.db.router.annotation.DBRouter;
 import cn.bugstack.middleware.db.router.annotation.DBRouterStrategy;

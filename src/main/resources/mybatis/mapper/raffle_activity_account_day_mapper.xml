@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wjy.marketcenter.mapper.activity.IRaffleActivityAccountDayDao">
+<mapper namespace="com.wjy.marketcenter.dao.activity.IRaffleActivityAccountDayDao">
     <resultMap id="dataMap" type="com.wjy.marketcenter.po.activity.RaffleActivityAccountDay">
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>

@@ -7,10 +7,10 @@ import com.wjy.marketcenter.entity.StrategyAwardEntity;
 import com.wjy.marketcenter.entity.StrategyEntity;
 import com.wjy.marketcenter.entity.StrategyRuleEntity;
 import com.wjy.marketcenter.exception.AppException;
-import com.wjy.marketcenter.mapper.*;
-import com.wjy.marketcenter.mapper.activity.IRaffleActivityAccountDao;
-import com.wjy.marketcenter.mapper.activity.IRaffleActivityAccountDayDao;
-import com.wjy.marketcenter.mapper.activity.IRaffleActivityDao;
+import com.wjy.marketcenter.dao.*;
+import com.wjy.marketcenter.dao.activity.IRaffleActivityAccountDao;
+import com.wjy.marketcenter.dao.activity.IRaffleActivityAccountDayDao;
+import com.wjy.marketcenter.dao.activity.IRaffleActivityDao;
 import com.wjy.marketcenter.po.*;
 import com.wjy.marketcenter.po.activity.RaffleActivityAccount;
 import com.wjy.marketcenter.po.activity.RaffleActivityAccountDay;
@@ -55,8 +55,9 @@ public class StrategyRepository  {
     @Resource
     private RuleTreeNodeMapper ruleTreeNodeMapper;
 
-    private IRaffleActivityAccountDao raffleActivityAccountDao;
     @Resource
+    private IRaffleActivityAccountDao raffleActivityAccountDao;
+
 
 
     /**

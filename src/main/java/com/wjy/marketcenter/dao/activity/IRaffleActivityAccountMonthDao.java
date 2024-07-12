@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.mapper.activity;
+package com.wjy.marketcenter.dao.activity;
 
 import cn.bugstack.middleware.db.router.annotation.DBRouter;
 import com.wjy.marketcenter.po.activity.RaffleActivityAccountMonth;

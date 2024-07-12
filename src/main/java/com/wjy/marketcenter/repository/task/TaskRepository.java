@@ -1,8 +1,8 @@
 package com.wjy.marketcenter.repository.task;
 
+import com.wjy.marketcenter.dao.task.ITaskDao;
 import com.wjy.marketcenter.entity.task.TaskEntity;
 import com.wjy.marketcenter.event.EventPublisher;
-import com.wjy.marketcenter.mapper.activity.ITaskDao;
 import com.wjy.marketcenter.po.task.Task;
 import org.springframework.stereotype.Repository;
 

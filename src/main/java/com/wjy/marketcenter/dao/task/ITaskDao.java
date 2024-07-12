@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.mapper.task;
+package com.wjy.marketcenter.dao.task;
 
 import cn.bugstack.middleware.db.router.annotation.DBRouter;
 import com.wjy.marketcenter.po.task.Task;

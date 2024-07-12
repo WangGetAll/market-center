@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wjy.marketcenter.mapper.AwardMapper">
+<mapper namespace="com.wjy.marketcenter.dao.IAwardDao">
 
     <resultMap id="dataMap" type="com.wjy.marketcenter.po.Award">
         <id column="id" property="id"/>
@@ -17,5 +17,14 @@
         from award
                  limit 10
     </select>
+
+    <select id="queryAwardConfigByAwardId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select award_config from award where award_id = #{awardId}
+    </select>
+
+    <select id="queryAwardKeyByAwardId" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select award_key from award where award_id = #{awardId}
+    </select>
+
 
 </mapper>

@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.mapper.rebate;
+package com.wjy.marketcenter.dao.rebate;
 
 import cn.bugstack.middleware.db.router.annotation.DBRouter;
 import cn.bugstack.middleware.db.router.annotation.DBRouterStrategy;
