@@ -2,6 +2,7 @@ package com.wjy.marketcenter.repository.rebate;
 
 
 import com.wjy.marketcenter.aggregate.rebate.BehaviorRebateAggregate;
+import com.wjy.marketcenter.entity.rebate.BehaviorRebateOrderEntity;
 import com.wjy.marketcenter.valobj.rebate.BehaviorTypeVO;
 import com.wjy.marketcenter.valobj.rebate.DailyBehaviorRebateVO;
 
@@ -15,5 +16,7 @@ public interface IBehaviorRebateRepository {
     List<DailyBehaviorRebateVO> queryDailyBehaviorRebateConfig(BehaviorTypeVO behaviorTypeVO);
 
     void saveUserRebateRecord(String userId, List<BehaviorRebateAggregate> behaviorRebateAggregates);
+
+    List<BehaviorRebateOrderEntity> queryOrderByOutBusinessNo(String userId, String outBusinessNo);
 
 }

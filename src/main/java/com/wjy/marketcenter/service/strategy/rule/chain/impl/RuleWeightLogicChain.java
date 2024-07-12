@@ -2,7 +2,7 @@ package com.wjy.marketcenter.service.strategy.rule.chain.impl;
 
 import com.wjy.marketcenter.common.Constants;
 import com.wjy.marketcenter.repository.strategy.StrategyRepository;
-import com.wjy.marketcenter.service.strategy.armory.StrategyArmory;
+import com.wjy.marketcenter.service.strategy.armory.StrategyArmoryDispatch;
 import com.wjy.marketcenter.service.strategy.rule.chain.AbstractLogicChain;
 import com.wjy.marketcenter.service.strategy.rule.chain.factory.DefaultChainFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,7 @@ public class RuleWeightLogicChain extends AbstractLogicChain {
     private StrategyRepository repository;
 
     @Resource
-    protected StrategyArmory strategyArmory;
+    protected StrategyArmoryDispatch strategyArmory;
 
     // 根据用户ID查询用户抽奖消耗的积分值，本章节我们先写死为固定的值。后续需要从数据库中查询。
     public Long userScore = 0L;
@@ -39,6 +39,7 @@ public class RuleWeightLogicChain extends AbstractLogicChain {
         List<Long> analyticalSortedKeys = new ArrayList<>(analyticalValueGroup.keySet());
         Collections.sort(analyticalSortedKeys);
         // 用户的积分在哪个范围
+        Integer userScore = repository.queryActivityAccountTotalUseCount(userId, strategyId);
         Long nextValue = analyticalSortedKeys.stream()
                 .sorted(Comparator.reverseOrder())
                 .filter(analyticalSortedKeyValue -> userScore >= analyticalSortedKeyValue)

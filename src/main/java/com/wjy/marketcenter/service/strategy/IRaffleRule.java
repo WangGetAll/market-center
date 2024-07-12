@@ -1,5 +1,8 @@
 package com.wjy.marketcenter.service.strategy;
 
+import com.wjy.marketcenter.valobj.RuleWeightVO;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,5 +17,28 @@ public interface IRaffleRule {
      * @return key 规则树，value rule_lock 加锁值
      */
     Map<String, Integer> queryAwardRuleLockCount(String[] treeIds);
+
+    /**
+     * 查询奖品权重配置
+     *
+     * @param strategyId 策略ID
+     * @return 权重规则
+     */
+    List<RuleWeightVO> queryAwardRuleWeight(Long strategyId);
+
+
+    /**
+     * 1. 根据activityId查询策略id
+     * 2. 根据策略id、规则名称为"rule_weight"查询strategy_rule表，得到权重规则具体配置
+     * 3. 解析配置，
+     * 4. 把根据配置中过奖品id查询strategy_award表，得到奖品的标题
+     * 5. 组装得到权重对象列表。每个权重对象中都有权重值、奖品列表两个属性
+     *
+     * @param activityId 活动ID
+     * @return 权重规则
+     */
+    List<RuleWeightVO> queryAwardRuleWeightByActivityId(Long activityId);
+
+
 
 }

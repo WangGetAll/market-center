@@ -10,6 +10,7 @@ import com.wjy.marketcenter.service.strategy.rule.chain.factory.DefaultChainFact
 import com.wjy.marketcenter.service.strategy.rule.tree.factory.DefaultTreeFactory;
 import com.wjy.marketcenter.service.strategy.rule.tree.factory.engine.IDecisionTreeEngine;
 import com.wjy.marketcenter.valobj.RuleTreeVO;
+import com.wjy.marketcenter.valobj.RuleWeightVO;
 import com.wjy.marketcenter.valobj.StrategyAwardRuleModelVO;
 import com.wjy.marketcenter.valobj.StrategyAwardStockKeyVO;
 import lombok.extern.slf4j.Slf4j;
@@ -113,6 +114,35 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy implements IRa
     @Override
     public Map<String, Integer> queryAwardRuleLockCount(String[] treeIds) {
         return repository.queryAwardRuleLockCount(treeIds);
+    }
+
+
+    /**
+     * 1. 根据策略id、规则名称为"rule_weight"查询strategy_rule表，得到权重规则具体配置
+     * 2. 解析配置，
+     * 3. 把根据配置中过奖品id查询strategy_award表，得到奖品的标题
+     * 4. 组装得到权重对象列表。每个权重对象中都有权重值、奖品列表两个属性
+     * @param strategyId 策略ID
+     * @return
+     */
+    @Override
+    public List<RuleWeightVO> queryAwardRuleWeight(Long strategyId) {
+        return repository.queryAwardRuleWeight(strategyId);
+    }
+
+    /**
+     * 1. 根据activityId查询策略id
+     * 2. 根据策略id、规则名称为"rule_weight"查询strategy_rule表，得到权重规则具体配置
+     * 3. 解析配置，
+     * 4. 把根据配置中过奖品id查询strategy_award表，得到奖品的标题
+     * 5.组装得到权重对象列表。每个权重对象中都有权重值、奖品列表两个属性
+     * @param activityId 活动ID
+     * @return
+     */
+    @Override
+    public List<RuleWeightVO> queryAwardRuleWeightByActivityId(Long activityId) {
+        Long strategyId = repository.queryStrategyIdByActivityId(activityId);
+        return queryAwardRuleWeight(strategyId);
     }
 
 

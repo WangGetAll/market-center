@@ -16,5 +16,10 @@ public interface StrategyRuleMapper {
      */
     StrategyRule queryStrategyRule(StrategyRule strategyRuleReq);
 
+    /**
+     * 根据策略id、奖品id（如果有）、规则名称查询strategy_rule表，得到规则具体配置
+     * @param strategyRule
+     * @return
+     */
     String queryStrategyRuleValue(StrategyRule strategyRule);
 }

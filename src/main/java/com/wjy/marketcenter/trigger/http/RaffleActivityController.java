@@ -4,14 +4,19 @@ import com.alibaba.fastjson.JSON;
 import com.wjy.marketcenter.api.IRaffleActivityService;
 import com.wjy.marketcenter.api.dto.ActivityDrawRequestDTO;
 import com.wjy.marketcenter.api.dto.ActivityDrawResponseDTO;
+import com.wjy.marketcenter.api.dto.UserActivityAccountRequestDTO;
+import com.wjy.marketcenter.api.dto.UserActivityAccountResponseDTO;
 import com.wjy.marketcenter.common.Response;
 import com.wjy.marketcenter.entity.RaffleAwardEntity;
 import com.wjy.marketcenter.entity.RaffleFactorEntity;
+import com.wjy.marketcenter.entity.activity.ActivityAccountEntity;
 import com.wjy.marketcenter.entity.activity.UserRaffleOrderEntity;
 import com.wjy.marketcenter.entity.award.UserAwardRecordEntity;
 import com.wjy.marketcenter.entity.rebate.BehaviorEntity;
+import com.wjy.marketcenter.entity.rebate.BehaviorRebateOrderEntity;
 import com.wjy.marketcenter.enums.ResponseCode;
 import com.wjy.marketcenter.exception.AppException;
+import com.wjy.marketcenter.service.activity.IRaffleActivityAccountQuotaService;
 import com.wjy.marketcenter.service.activity.IRaffleActivityPartakeService;
 import com.wjy.marketcenter.service.activity.armory.IActivityArmory;
 import com.wjy.marketcenter.service.award.IAwardService;
@@ -51,6 +56,10 @@ public class RaffleActivityController implements IRaffleActivityService {
 
     @Resource
     private IBehaviorRebateService behaviorRebateService;
+
+    @Resource
+    private IRaffleActivityAccountQuotaService raffleActivityAccountQuotaService;
+
 
 
     /**
@@ -274,6 +283,87 @@ public class RaffleActivityController implements IRaffleActivityService {
                     .code(ResponseCode.UN_ERROR.getCode())
                     .info(ResponseCode.UN_ERROR.getInfo())
                     .data(false)
+                    .build();
+        }
+    }
+
+
+    /**
+     * 根据userid、outBusinessNo查询user_behavior_rebate_order表，得到用户的返利记录
+     * 如果有返利记录，说明已经做了返利
+     * <p>
+     * curl -X POST http://localhost:8091/api/v1/raffle/activity/is_calendar_sign_rebate -d "userId=xiaofuge" -H "Content-Type: application/x-www-form-urlencoded"
+     */
+    @RequestMapping(value = "is_calendar_sign_rebate", method = RequestMethod.POST)
+    @Override
+    public Response<Boolean> isCalendarSignRebate(String userId) {
+        try {
+            log.info("查询用户是否完成日历签到返利开始 userId:{}", userId);
+            String outBusinessNo = dateFormatDay.format(new Date());
+            List<BehaviorRebateOrderEntity> behaviorRebateOrderEntities = behaviorRebateService.queryOrderByOutBusinessNo(userId, outBusinessNo);
+            log.info("查询用户是否完成日历签到返利完成 userId:{} orders.size:{}", userId, behaviorRebateOrderEntities.size());
+            return Response.<Boolean>builder()
+                    .code(ResponseCode.SUCCESS.getCode())
+                    .info(ResponseCode.SUCCESS.getInfo())
+                    .data(!behaviorRebateOrderEntities.isEmpty()) // 只要不为空，则表示已经做了签到
+                    .build();
+        } catch (Exception e) {
+            log.error("查询用户是否完成日历签到返利失败 userId:{}", userId, e);
+            return Response.<Boolean>builder()
+                    .code(ResponseCode.UN_ERROR.getCode())
+                    .info(ResponseCode.UN_ERROR.getInfo())
+                    .data(false)
+                    .build();
+        }
+    }
+
+    /**
+     * 查询账户额度
+     *1.查询用户抽奖次数
+     * 1.1 根据用户id、活动id查询raffle_activity_account表，得到用户在该活动的抽奖次数，不存再记录，创建兜底对象（次数都是0）。
+     * 1.2 根据userId、activityId、month查raffle_activity_account_month表，获得用户在该活动上某月的抽奖次数
+     * 1.3 根据用户id、活动id、day查询raffle_activity_account_day表，得到用户的日次数
+     *
+     *
+     *
+     * <p>
+     * curl --request POST \
+     * --url http://localhost:8091/api/v1/raffle/activity/query_user_activity_account \
+     * --header 'content-type: application/json' \
+     * --data '{
+     * "userId":"xiaofuge",
+     * "activityId": 100301
+     * }'
+     */
+    @RequestMapping(value = "query_user_activity_account", method = RequestMethod.POST)
+    @Override
+    public Response<UserActivityAccountResponseDTO> queryUserActivityAccount(UserActivityAccountRequestDTO request) {
+        try {
+            log.info("查询用户活动账户开始 userId:{} activityId:{}", request.getUserId(), request.getActivityId());
+            // 1. 参数校验
+            if (StringUtils.isBlank(request.getUserId()) || null == request.getActivityId()) {
+                throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
+            }
+            ActivityAccountEntity activityAccountEntity = raffleActivityAccountQuotaService.queryActivityAccountEntity(request.getActivityId(), request.getUserId());
+            UserActivityAccountResponseDTO userActivityAccountResponseDTO = UserActivityAccountResponseDTO.builder()
+                    .totalCount(activityAccountEntity.getTotalCount())
+                    .totalCountSurplus(activityAccountEntity.getTotalCountSurplus())
+                    .dayCount(activityAccountEntity.getDayCount())
+                    .dayCountSurplus(activityAccountEntity.getDayCountSurplus())
+                    .monthCount(activityAccountEntity.getMonthCount())
+                    .monthCountSurplus(activityAccountEntity.getMonthCountSurplus())
+                    .build();
+            log.info("查询用户活动账户完成 userId:{} activityId:{} dto:{}", request.getUserId(), request.getActivityId(), JSON.toJSONString(userActivityAccountResponseDTO));
+            return Response.<UserActivityAccountResponseDTO>builder()
+                    .code(ResponseCode.SUCCESS.getCode())
+                    .info(ResponseCode.SUCCESS.getInfo())
+                    .data(userActivityAccountResponseDTO)
+                    .build();
+        } catch (Exception e) {
+            log.error("查询用户活动账户失败 userId:{} activityId:{}", request.getUserId(), request.getActivityId(), e);
+            return Response.<UserActivityAccountResponseDTO>builder()
+                    .code(ResponseCode.UN_ERROR.getCode())
+                    .info(ResponseCode.UN_ERROR.getInfo())
                     .build();
         }
     }

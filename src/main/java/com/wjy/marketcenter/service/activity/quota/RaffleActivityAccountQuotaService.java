@@ -76,6 +76,19 @@ public class RaffleActivityAccountQuotaService extends AbstractRaffleActivityAcc
     }
 
     /**
+     * 根据用户id、活动id查询raffle_activity_account表，得到用户在该活动的抽奖次数
+     * 总抽奖次数减去剩余抽奖次数得到已经抽奖次数
+     * @param activityId 活动ID
+     * @param userId     用户ID
+     * @return
+     */
+    @Override
+    public Integer queryRaffleActivityAccountPartakeCount(Long activityId, String userId) {
+        return activityRepository.queryRaffleActivityAccountPartakeCount(activityId, userId);
+    }
+
+
+    /**
      * 根据用户id、活动id、day查询用户的日参与次数（总次数-剩余次数）
      * @param activityId 活动ID
      * @param userId     用户ID
@@ -84,6 +97,19 @@ public class RaffleActivityAccountQuotaService extends AbstractRaffleActivityAcc
     @Override
     public Integer queryRaffleActivityAccountDayPartakeCount(Long activityId, String userId) {
         return activityRepository.queryRaffleActivityAccountDayPartakeCount(activityId, userId);
+    }
+
+    /**
+     * 1. 根据用户id、活动id查询raffle_activity_account表，得到用户在该活动的抽奖次数，不存再记录，创建兜底对象（次数都是0）。
+     * 2. 根据userId、activityId、month查raffle_activity_account_month表，获得用户在该活动上某月的抽奖次数，不存再记录，创建兜底对象（次数都是0）。
+     * 3. 根据用户id、活动id、day查询raffle_activity_account_day表，得到用户的日次数，不存再记录，创建兜底对象（次数都是0）。
+     * @param activityId 活动ID
+     * @param userId     用户ID
+     * @return
+     */
+    @Override
+    public ActivityAccountEntity queryActivityAccountEntity(Long activityId, String userId) {
+        return activityRepository.queryActivityAccountEntity(activityId, userId);
     }
 
 

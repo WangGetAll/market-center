@@ -24,5 +24,10 @@ public interface StrategyAwardMapper {
 
     void updateStrategyAwardStock(StrategyAward strategyAward);
 
+    /**
+     * 根据策略id、奖品id查strategy_award表，得到奖品的详细信息（概率、库存）
+     * @param strategyAwardReq
+     * @return
+     */
     StrategyAward queryStrategyAward(StrategyAward strategyAwardReq);
 }

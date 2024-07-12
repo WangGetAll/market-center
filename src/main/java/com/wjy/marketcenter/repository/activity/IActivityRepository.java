@@ -106,5 +106,25 @@ public interface IActivityRepository {
      * @return
      */
     Integer queryRaffleActivityAccountDayPartakeCount(Long activityId, String userId);
+
+    /**
+     *  1. 根据用户id、活动id查询raffle_activity_account表，得到用户在该活动的抽奖次数，不存再记录，创建兜底对象（次数都是0）。
+     *  2. 根据userId、activityId、month查raffle_activity_account_month表，获得用户在该活动上某月的抽奖次数。
+     *  3. 根据用户id、活动id、day查询raffle_activity_account_day表，得到用户的日次数。
+     * @param activityId
+     * @param userId
+     * @return
+     */
+    ActivityAccountEntity queryActivityAccountEntity(Long activityId, String userId);
+
+    /**
+     * 根据用户id、活动id查询raffle_activity_account表，得到用户在该活动的抽奖次数
+     * 总抽奖次数减去剩余抽奖次数得到已经抽奖次数
+     * @param activityId
+     * @param userId
+     * @return
+     */
+    Integer queryRaffleActivityAccountPartakeCount(Long activityId, String userId);
+
 }
 

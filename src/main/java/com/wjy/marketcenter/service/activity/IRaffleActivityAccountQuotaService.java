@@ -1,5 +1,6 @@
 package com.wjy.marketcenter.service.activity;
 
+import com.wjy.marketcenter.entity.activity.ActivityAccountEntity;
 import com.wjy.marketcenter.entity.activity.SkuRechargeEntity;
 
 /**
@@ -19,6 +20,17 @@ public interface IRaffleActivityAccountQuotaService {
     String createOrder(SkuRechargeEntity skuRechargeEntity);
 
     /**
+     * 根据用户id、活动id查询raffle_activity_account表，得到用户在该活动的抽奖次数
+     * 总抽奖次数减去剩余抽奖次数得到已经抽奖次数
+     *
+     * @param activityId 活动ID
+     * @param userId     用户ID
+     * @return 参与次数
+     */
+    Integer queryRaffleActivityAccountPartakeCount(Long activityId, String userId);
+
+
+    /**
      * 根据用户id、活动id、day查询用户的日参与次数（总次数-剩余次数）
      *
      * @param activityId 活动ID
@@ -26,6 +38,18 @@ public interface IRaffleActivityAccountQuotaService {
      * @return 参与次数
      */
     Integer queryRaffleActivityAccountDayPartakeCount(Long activityId, String userId);
+
+    /**
+     *  1. 根据用户id、活动id查询raffle_activity_account表，得到用户在该活动的抽奖次数，不存再记录，创建兜底对象（次数都是0）。
+     *  2. 根据userId、activityId、month查raffle_activity_account_month表，获得用户在该活动上某月的抽奖次数。
+     *  3. 根据用户id、活动id、day查询raffle_activity_account_day表，得到用户的日次数。
+     *
+     * @param activityId 活动ID
+     * @param userId     用户ID
+     * @return 账户实体
+     */
+    ActivityAccountEntity queryActivityAccountEntity(Long activityId, String userId);
+
 
 
 
