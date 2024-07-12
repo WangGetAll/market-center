@@ -9,7 +9,7 @@ import com.wjy.marketcenter.enums.ResponseCode;
 import com.wjy.marketcenter.event.EventPublisher;
 import com.wjy.marketcenter.exception.AppException;
 import com.wjy.marketcenter.mapper.activity.ITaskDao;
-import com.wjy.marketcenter.mapper.activity.IUserAwardRecordDao;
+import com.wjy.marketcenter.mapper.award.IUserAwardRecordDao;
 import com.wjy.marketcenter.mapper.activity.IUserRaffleOrderDao;
 import com.wjy.marketcenter.po.activity.UserRaffleOrder;
 import com.wjy.marketcenter.po.award.UserAwardRecord;
