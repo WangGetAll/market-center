@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.api.http;
+package com.wjy.marketcenter.trigger.http;
 
 import com.alibaba.fastjson.JSON;
 import com.wjy.marketcenter.api.IRaffleStrategyService;
