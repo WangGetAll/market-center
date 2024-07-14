@@ -20,4 +20,20 @@ public interface IRaffleActivityOrderDao {
     @DBRouter
     List<RaffleActivityOrder> queryRaffleActivityOrderByUserId(String userId);
 
+    /**
+     * 根据userId、outBusinessNo查询raffle_activity_order表，得到活动下单信息
+     * @param raffleActivityOrderReq
+     * @return
+     */
+    @DBRouter
+    RaffleActivityOrder queryRaffleActivityOrder(RaffleActivityOrder raffleActivityOrderReq);
+
+    /**
+     * 根据userid、outBusinessNo、state=“wait_pay”更新raffle_activity_order表，将state更新为completed
+     * @param raffleActivityOrderReq
+     * @return
+     */
+    int updateOrderCompleted(RaffleActivityOrder raffleActivityOrderReq);
+
+
 }

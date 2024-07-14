@@ -1,4 +1,4 @@
-package com.wjy.marketcenter.service.credit;
+package com.wjy.marketcenter.service.credit.adjust;
 
 import com.wjy.marketcenter.entity.credit.TradeEntity;
 

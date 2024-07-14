@@ -1,6 +1,7 @@
 package com.wjy.marketcenter.service.activity;
 
 import com.wjy.marketcenter.entity.activity.ActivityAccountEntity;
+import com.wjy.marketcenter.entity.activity.DeliveryOrderEntity;
 import com.wjy.marketcenter.entity.activity.SkuRechargeEntity;
 
 /**
@@ -50,6 +51,11 @@ public interface IRaffleActivityAccountQuotaService {
      */
     ActivityAccountEntity queryActivityAccountEntity(Long activityId, String userId);
 
+    /**
+     * 订单出货 - 积分充值
+     * @param deliveryOrderEntity 出货单实体对象
+     */
+    void updateOrder(DeliveryOrderEntity deliveryOrderEntity);
 
 
 

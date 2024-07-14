@@ -9,10 +9,10 @@ import com.wjy.marketcenter.event.BaseEvent;
 import com.wjy.marketcenter.event.rebate.SendRebateMessageEvent;
 import com.wjy.marketcenter.exception.AppException;
 import com.wjy.marketcenter.service.activity.IRaffleActivityAccountQuotaService;
-import com.wjy.marketcenter.service.credit.ICreditAdjustService;
+import com.wjy.marketcenter.service.credit.adjust.ICreditAdjustService;
+import com.wjy.marketcenter.valobj.activity.OrderTradeTypeVO;
 import com.wjy.marketcenter.valobj.credit.TradeNameVO;
 import com.wjy.marketcenter.valobj.credit.TradeTypeVO;
-import com.wjy.marketcenter.valobj.rebate.RebateTypeVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -52,9 +52,9 @@ public class RebateMessageCustomer {
                     skuRechargeEntity.setUserId(rebateMessage.getUserId());
                     skuRechargeEntity.setSku(Long.valueOf(rebateMessage.getRebateConfig()));
                     skuRechargeEntity.setOutBusinessNo(rebateMessage.getBizId());
+                    skuRechargeEntity.setOrderTradeType(OrderTradeTypeVO.rebate_no_pay_trade);
                     raffleActivityAccountQuotaService.createOrder(skuRechargeEntity);
                     break;
-                    // 积分奖励
                 case "integral":
                     TradeEntity tradeEntity = new TradeEntity();
                     tradeEntity.setUserId(rebateMessage.getUserId());
@@ -65,6 +65,7 @@ public class RebateMessageCustomer {
                     creditAdjustService.createOrder(tradeEntity);
                     break;
             }
+
         } catch (AppException e) {
             if (ResponseCode.INDEX_DUP.getCode().equals(e.getCode())) {
                 log.warn("监听用户行为返利消息，消费重复 topic: {} message: {}", topic, message, e);
